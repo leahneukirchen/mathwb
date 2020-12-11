@@ -60,7 +60,6 @@ console.log(evt);
 		if($("#menu").width()>Tools.menu_width+3)return;
 		if (evt.target == input) return;
 
-		// search for a parent that is a MathElement. If one is found then act on that instead.
 		var target = evt.target;
 		var a = target;
 		var els = [];
@@ -68,7 +67,7 @@ console.log(evt);
 			els.unshift(a);
 			a = a.parentElement;
 		}
-		  console.log(els);
+
 		var parentMathematics = els.find(el => el.getAttribute("class") === "katex");
 		if ((parentMathematics) && parentMathematics.tagName === "SPAN") {
 			target = parentMathematics.parentElement;
@@ -205,7 +204,7 @@ console.log(evt);
 	function updateText(textField, text) {
                 if (text) {
 		    textField.innerHTML = "";
-		    katex.render(text, textField);
+		    katex.render(text, textField, { throwOnError: false });
 		    textField.txt = text;
 //		    textField.setAttribute("width", Math.min(1, textField.childNodes[0].offsetWidth));
 //		    textField.setAttribute("height", Math.min(1, textField.childNodes[0].offsetHeight));
@@ -227,8 +226,6 @@ console.log(evt);
 		elem.setAttribute("opacity", Math.max(0.1, Math.min(1, fieldData.opacity)) || 1);
 
 		updateText(elem, fieldData.txt);
-//                if (fieldData.txt) katex.render(fieldData.txt, elem);
-//	        elem.txt = fieldData.txt;
 
 		if(fieldData.data){
 			elem.setAttribute("data-lock",fieldData.data);
