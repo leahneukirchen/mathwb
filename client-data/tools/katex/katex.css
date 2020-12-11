@@ -16,6 +16,7 @@ text {
 
 foreignObject {
 	overflow: visible;
+	white-space: nowrap;
 	user-select:none;
 	-moz-user-select:none;
 }
