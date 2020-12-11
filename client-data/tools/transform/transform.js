@@ -256,7 +256,7 @@
 						var elem = svg.getElementById(data.id[i]);
 						//check if top layer
 						if(Tools.useLayers){
-							if(elem.getAttribute("class")!="layer"+Tools.layer){
+							if(elem && elem.getAttribute("class")!="layer"+Tools.layer){
 								elem.setAttribute("class","layer-"+Tools.layer);
 								Tools.group.appendChild(elem);
 							}
@@ -318,6 +318,20 @@
 		target=document.elementFromPoint((x)*Tools.scale-document.documentElement.scrollLeft, (y)*Tools.scale-document.documentElement.scrollTop);
 		if (target && target !== Tools.svg) {
 			if(!target.id.startsWith("layer")&&target.id!="defs"&&target.id!="rect_1"&&target.id!="cursors"){
+
+				var a = target;
+				var els = [];
+				while (a) {
+					els.unshift(a);
+					a = a.parentElement;
+				}
+				var parentMathematics = els.find(el => el.getAttribute("class") === "katex");
+				if ((parentMathematics) && parentMathematics.tagName === "SPAN") {
+					target = parentMathematics.parentElement;
+					target.setAttribute("width", Math.min(50, target.childNodes[0].offsetWidth));
+					target.setAttribute("height", Math.min(50, target.childNodes[0].offsetHeight));
+				}
+
 				//elem = svg.getElementById(target.id);
 				//if (elem === null) return; 
 				//console.log(target.id);
@@ -363,6 +377,7 @@
 				case "path":    shape = new Transform(target,null,hideLock);   break;
 				case "polygon": shape = new Transform(target,null,hideLock);  break;
 				case "rect":    shape = new Transform(target,null,hideLock);   break;
+				case "foreignObject": shape = new Transform(target,null,hideLock);   break;
 				default:
 					// do nothing for now
 			}

@@ -240,6 +240,17 @@
 		target=document.elementFromPoint((x+i)*Tools.scale-document.documentElement.scrollLeft, (y+j)*Tools.scale-document.documentElement.scrollTop);
 
 		if (target && target !== Tools.svg) {
+			var a = target;
+			var els = [];
+			while (a) {
+				els.unshift(a);
+				a = a.parentElement;
+			}
+			var parentMathematics = els.find(el => el.getAttribute("class") === "katex");
+			if ((parentMathematics) && parentMathematics.tagName === "SPAN") {
+				target = parentMathematics.parentElement;
+			}
+
 			var msg = {
 				"type": "delete",
 				"id": null
